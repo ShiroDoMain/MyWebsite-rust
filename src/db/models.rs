@@ -1,6 +1,5 @@
-use serde_derive::*;
-
 use super::schema::posts;
+use serde_derive::*;
 
 #[derive(Serialize, Queryable)]
 pub struct Post {

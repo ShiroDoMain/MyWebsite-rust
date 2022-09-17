@@ -24,8 +24,8 @@ pub fn query(connection :&SqliteConnection) -> Vec<models::Post>{
 
 }
 
-// pub fn filter_task(connection: &SqliteConnection) {
-//     schema::task::table
-//         .filter(models::Task -> )
+pub fn filter_post(connection: &SqliteConnection) {
+    // schema::posts::table
+    //     .filter()
         
-// }
+}
