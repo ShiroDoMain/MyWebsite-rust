@@ -35,8 +35,13 @@ async fn main_page(tmpl: aweb::Data<tera::Tera>,req: HttpRequest) -> Result<Http
     Ok(HttpResponse::Ok().content_type("text/html").body(s))
 }
 
-async fn index() -> HttpResponse {
-    HttpResponse::Ok().body("<h1>Hello</h1>")
+async fn index(tmpl: aweb::Data<tera::Tera>) -> Result<HttpResponse, Error> {
+    let mut ctx = tera::Context::new();
+    ctx.insert("name", "World");
+    let s = tmpl.render("index.html", &ctx).map_err(
+        |_| error::ErrorInternalServerError("Template Error")
+    )?;
+    Ok(HttpResponse::Ok().body(s))
 }
 
 #[actix_web::main]
@@ -49,7 +54,7 @@ async fn main() -> std::io::Result<()> {
             App::new()
                 .app_data(aweb::Data::new(tera))
                 .service(aweb::resource("/{name}").route(aweb::get().to(main_page)))
-                // .route("/", aweb::get().to(index))
+                .route("/", aweb::get().to(index))
                 // .route("/{name}", aweb::get().to(main_page))
         }
     )
